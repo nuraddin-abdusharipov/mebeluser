@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mebel Katalogi - Mebel Markazi</title>
+    <meta name="description" content="Mebel Markazi - Keng assortimentdagi zamonaviy mebellar">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="https://i.ibb.co/6yF1s9H/logo-placeholder.png" alt="Mebel Markazi Logo">
+                <span>Mebel Markazi</span>
+            </a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Bosh sahifa</a></li>
+                    <li><a href="mebel.html" class="active">Mahsulotlar</a></li>
+                    <li><a href="#">Biz haqimizda</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Aloqa</a></li>
+                </ul>
+            </nav>
+            <div class="header-icons">
+                <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
+                <a href="#" class="cart-icon" id="cart-toggle"><i class="fas fa-shopping-cart"></i><span id="cart-count">0</span></a>
+                <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mebel Katalogi -->
+    <main class="catalog-page">
+        <section class="section-padding">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Mebel Katalogi</h2>
+                    <p>Bizning keng assortimentimiz bilan tanishing</p>
+                </div>
+
+                <!-- Filtrlar -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="category">Kategoriya:</label>
+                        <select id="category">
+                            <option value="all">Barchasi</option>
+                            <option value="living">Mehmonxona</option>
+                            <option value="bedroom">Yotoq xonasi</option>
+                            <option value="kitchen">Oshxona</option>
+                            <option value="office">Ofis</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="price">Narx:</label>
+                        <select id="price">
+                            <option value="all">Barchasi</option>
+                            <option value="0-5000000">5 000 000 so'm gacha</option>
+                            <option value="5000000-10000000">5-10 mln so'm</option>
+                            <option value="10000000-20000000">10-20 mln so'm</option>
+                            <option value="20000000+">20 mln so'mdan yuqori</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="sort">Saralash:</label>
+                        <select id="sort">
+                            <option value="default">Standart</option>
+                            <option value="price-low">Arzondan qimmatga</option>
+                            <option value="price-high">Qimmatdan arzonga</option>
+                            <option value="name">Alfabit bo'yicha</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Mahsulotlar Grid -->
+                <div class="products-grid" id="products-container">
+                    <!-- Mahsulotlar JavaScript orqali yuklanadi -->
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button class="pagination-btn" id="prev-page" disabled>
+                        <i class="fas fa-chevron-left"></i> Oldingi
+                    </button>
+                    <div class="page-numbers" id="page-numbers">
+                        <!-- Sahifa raqamlari JavaScript orqali yuklanadi -->
+                    </div>
+                    <button class="pagination-btn" id="next-page">
+                        Keyingi <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-widget about-widget">
+                    <h3>Mebel Markazi</h3>
+                    <p>Bizning maqsadimiz - sizning uyingiz va ofisingizni eng yuqori sifatdagi, zamonaviy va qulay mebellar bilan jihozlash.</p>
+                </div>
+                <div class="footer-widget links-widget">
+                    <h3>Foydali Havolalar</h3>
+                    <div class="footer-links">
+                        <ul>
+                            <li><a href="index.html">Bosh sahifa</a></li>
+                            <li><a href="mebel.html">Mahsulotlar</a></li>
+                            <li><a href="#">Biz haqimizda</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-widget contact-widget">
+                    <h3>Aloqa</h3>
+                    <p><i class="fas fa-phone"></i> +998 90 123 45 67</p>
+                    <p><i class="fas fa-envelope"></i> info@mebelmarkazi.uz</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Mebel Markazi. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal oynalar -->
+    <div id="quick-view-modal" class="modal">
+        <!-- Modal mazmuni index.html bilan bir xil -->
+    </div>
+
+    <!-- Savat -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <!-- Savat mazmuni index.html bilan bir xil -->
+    </div>
+
+    <script src="script.js"></script>
+    <script src="catalog.js"></script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mebel Markazi - Zamonaviy va Sifatli Mebellar</title>
+    <meta name="description" content="Mebel Markazi - O'zbekistonning barcha viloyatlariga zamonaviy, qulay va sifatli mebellarni yetkazib berish">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header va Navigatsiya -->
+    <header class="main-header">
+        <div class="container">
+            <a href="#" class="logo" data-page="home">
+                <img src="https://i.ibb.co/6yF1s9H/logo-placeholder.png" alt="Mebel Markazi Logo">
+                <span>Mebel Markazi</span>
+            </a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#" data-page="home" class="nav-link active">Bosh sahifa</a></li>
+                    <li><a href="mebel.html" class="nav-link">Mahsulotlar</a></li>
+                    <li><a href="#" data-page="about" class="nav-link">Biz haqimizda</a></li>
+                    <li><a href="#" data-page="blog" class="nav-link">Blog</a></li>
+                    <li><a href="#" data-page="contact" class="nav-link">Aloqa</a></li>
+                </ul>
+            </nav>
+            <div class="header-icons">
+                <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
+                <a href="#" class="cart-icon" id="cart-toggle"><i class="fas fa-shopping-cart"></i><span id="cart-count">0</span></a>
+                <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Bosh Sahifa -->
+    <main id="home-page" class="page-content active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-slider">
+                <div class="slide active" style="background-image: url('https://assets.asaxiy.uz/product/items/desktop/defd40204344c9659a0a3eb4ebc125f62020102218100638894Qpuw0cPYOq.jpg.webp');">
+                    <div class="hero-content">
+                        <h1>Uyingiz uchun ajoyib mebellar</h1>
+                        <p>Zamonaviy dizayn va beqiyos qulaylik</p>
+                        <a href="mebel.html" class="btn btn-primary">Kolleksiyani ko'rish</a>
+                    </div>
+                </div>
+                <div class="slide" style="background-image: url('https://assets.asaxiy.uz/product/items/desktop/3adfe5948a7a6aad1a9d223e615404ad2020101913002247270ouZMH8BX0z.jpg.webp');">
+                    <div class="hero-content">
+                        <h1>Yotoq xonalari uchun yechimlar</h1>
+                        <p>Qulaylik va go'zallik uyg'unligi</p>
+                        <a href="mebel.html" class="btn btn-secondary">Batafsil</a>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-controls">
+                <button class="prev-slide"><i class="fas fa-chevron-left"></i></button>
+                <button class="next-slide"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </section>
+
+        <!-- Mahsulot Toifalari -->
+        <section class="section-padding bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Mahsulot Toifalari</h2>
+                    <p>Har bir xona uchun maxsus yechimlar</p>
+                </div>
+                <div class="categories-grid">
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="https://assets.asaxiy.uz/product/items/desktop/defd40204344c9659a0a3eb4ebc125f62020102218100638894Qpuw0cPYOq.jpg.webp" alt="Mehmonxona mebellari">
+                            <div class="category-overlay">
+                                <a href="mebel.html" class="btn btn-light">Ko'rish</a>
+                            </div>
+                        </div>
+                        <h3>Mehmonxona Mebellari</h3>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="https://assets.asaxiy.uz/product/items/desktop/3adfe5948a7a6aad1a9d223e615404ad2020101913002247270ouZMH8BX0z.jpg.webp" alt="Yotoq xonasi mebellari">
+                            <div class="category-overlay">
+                                <a href="mebel.html" class="btn btn-light">Ko'rish</a>
+                            </div>
+                        </div>
+                        <h3>Yotoq Xonasi Mebellari</h3>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="https://extra-interiors.com/foto/200909/kukhnia_perfetta_surskaia_mebel_foto_1.webp" alt="Oshxona mebellari">
+                            <div class="category-overlay">
+                                <a href="mebel.html" class="btn btn-light">Ko'rish</a>
+                            </div>
+                        </div>
+                        <h3>Oshxona Mebellari</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tavsiya etilgan mahsulotlar -->
+        <section class="section-padding">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Tavsiya Etilgan Mahsulotlar</h2>
+                    <p>Eng mashhur va sifatli to'plamlar</p>
+                </div>
+                <div class="products-grid">
+                    <!-- Mahsulot kartalari -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://picsum.photos/seed/product1/350/350.jpg" alt="Milan divan to'plami">
+                            <div class="product-actions">
+                                <button class="action-btn quick-view" data-product-id="1"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn add-to-wishlist"><i class="far fa-heart"></i></button>
+                                <button class="action-btn add-to-cart" data-name="Milan divan to'plami" data-price="12500000"><i class="fas fa-shopping-cart"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>Milan divan to'plami</h3>
+                            <p class="product-price">12 500 000 so'm</p>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Qo'shimcha mahsulotlar -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-widget about-widget">
+                    <h3>Mebel Markazi</h3>
+                    <p>Bizning maqsadimiz - sizning uyingiz va ofisingizni eng yuqori sifatdagi, zamonaviy va qulay mebellar bilan jihozlash.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-widget links-widget">
+                    <h3>Foydali Havolalar</h3>
+                    <div class="footer-links">
+                        <ul>
+                            <li><a href="#" data-page="home" class="nav-link">Bosh sahifa</a></li>
+                            <li><a href="mebel.html">Mahsulotlar</a></li>
+                            <li><a href="#" data-page="about" class="nav-link">Biz haqimizda</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-widget contact-widget">
+                    <h3>Aloqa</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Toshkent sh., Chilonzor tumani</p>
+                    <p><i class="fas fa-phone"></i> +998 90 123 45 67</p>
+                    <p><i class="fas fa-envelope"></i> info@mebelmarkazi.uz</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Mebel Markazi. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal oynalar -->
+    <div id="quick-view-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modal-product-image" src="" alt="Mahsulot rasmi">
+                </div>
+                <div class="modal-details">
+                    <h2 id="modal-product-name">Mahsulot nomi</h2>
+                    <div class="price" id="modal-product-price">0 so'm</div>
+                    <div class="description">
+                        <p>Bu mahsulot eng yuqori sifatli materiallardan tayyorlangan.</p>
+                    </div>
+                    <button class="btn btn-primary add-to-cart-modal">Savatga qo'shish</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Savat -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Savat</h3>
+            <button class="close-cart" id="close-cart-btn">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items-container">
+            <p>Savatingiz bo'sh</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Jami:</span>
+                <span id="cart-total-price">0 so'm</span>
+            </div>
+            <button class="checkout-btn">Sotib olish</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
