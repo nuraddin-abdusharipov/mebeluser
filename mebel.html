@@ -77,7 +77,9 @@
 
                 <!-- Mahsulotlar Grid -->
                 <div class="products-grid" id="products-container">
-                    <!-- Mahsulotlar JavaScript orqali yuklanadi -->
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                        <p>Firebase yuklanmoqda...</p>
+                    </div>
                 </div>
 
                 <!-- Pagination -->
@@ -86,7 +88,7 @@
                         <i class="fas fa-chevron-left"></i> Oldingi
                     </button>
                     <div class="page-numbers" id="page-numbers">
-                        <!-- Sahifa raqamlari JavaScript orqali yuklanadi -->
+                        <!-- Sahifa raqamlari -->
                     </div>
                     <button class="pagination-btn" id="next-page">
                         Keyingi <i class="fas fa-chevron-right"></i>
@@ -96,30 +98,9 @@
         </section>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer (qisqartirilgan) -->
     <footer class="main-footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-widget about-widget">
-                    <h3>Mebel Markazi</h3>
-                    <p>Bizning maqsadimiz - sizning uyingiz va ofisingizni eng yuqori sifatdagi, zamonaviy va qulay mebellar bilan jihozlash.</p>
-                </div>
-                <div class="footer-widget links-widget">
-                    <h3>Foydali Havolalar</h3>
-                    <div class="footer-links">
-                        <ul>
-                            <li><a href="index.html">Bosh sahifa</a></li>
-                            <li><a href="mebel.html">Mahsulotlar</a></li>
-                            <li><a href="#">Biz haqimizda</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="footer-widget contact-widget">
-                    <h3>Aloqa</h3>
-                    <p><i class="fas fa-phone"></i> +998 90 123 45 67</p>
-                    <p><i class="fas fa-envelope"></i> info@mebelmarkazi.uz</p>
-                </div>
-            </div>
             <div class="footer-bottom">
                 <p>&copy; 2024 Mebel Markazi. Barcha huquqlar himoyalangan.</p>
             </div>
@@ -128,15 +109,27 @@
 
     <!-- Modal oynalar -->
     <div id="quick-view-modal" class="modal">
-        <!-- Modal mazmuni index.html bilan bir xil -->
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modal-product-image" src="" alt="Mahsulot rasmi">
+                </div>
+                <div class="modal-details">
+                    <h2 id="modal-product-name">Mahsulot nomi</h2>
+                    <div class="price" id="modal-product-price">0 so'm</div>
+                    <div class="description">
+                        <p>Bu mahsulot eng yuqori sifatli materiallardan tayyorlangan.</p>
+                    </div>
+                    <button class="btn btn-primary add-to-cart-modal">Savatga qo'shish</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Savat -->
-    <div id="cart-sidebar" class="cart-sidebar">
-        <!-- Savat mazmuni index.html bilan bir xil -->
-    </div>
-
-    <script src="script.js"></script>
+    <!-- Scriptlar -->
+    <script src="firebase-loader.js"></script>
     <script src="catalog.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
