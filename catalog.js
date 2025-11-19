@@ -8,12 +8,18 @@ import {
     where 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// catalog.js - MODULSIZ VERSIYA
 class ProductManager {
     constructor() {
         this.products = [];
         this.filteredProducts = [];
         this.currentPage = 1;
         this.productsPerPage = 6;
+        
+        // Firebase ni global o'zgaruvchilar orqali ishlatamiz
+        this.db = window.db;
+        this.firestore = window.firestore;
+        
         this.init();
     }
 
@@ -27,9 +33,12 @@ class ProductManager {
         try {
             console.log("Firestoredan mahsulotlarni yuklash...");
             
-            // INDEKS TALAB QILMAYDIGAN SODDA SO'ROV
-            const productsRef = collection(db, 'products');
-            const querySnapshot = await getDocs(productsRef);
+            if (!this.db) {
+                throw new Error("Firebase ishga tushmagan");
+            }
+            
+            // Firestore dan mahsulotlarni olish
+            const querySnapshot = await this.firestore.getDocs(this.firestore.collection(this.db, 'products'));
             
             this.products = [];
             
@@ -37,7 +46,7 @@ class ProductManager {
                 const productData = doc.data();
                 
                 // Client tomonda filtrlash
-                if (productData.status !== 'inactive') { // active yoki undefined bo'lsa ham qabul qilamiz
+                if (productData.status !== 'inactive') {
                     this.products.push({
                         id: doc.id,
                         name: productData.name || 'Nomsiz mahsulot',
@@ -69,7 +78,6 @@ class ProductManager {
     }
 
     getDefaultImage() {
-        // Turli xil default rasmlar
         const defaultImages = [
             'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=350&h=350&fit=crop',
             'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=350&h=350&fit=crop',
@@ -85,7 +93,6 @@ class ProductManager {
             return;
         }
 
-        // Joriy sahifadagi mahsulotlarni hisoblash
         const startIndex = (this.currentPage - 1) * this.productsPerPage;
         const endIndex = startIndex + this.productsPerPage;
         const currentProducts = this.filteredProducts.slice(startIndex, endIndex);
@@ -138,17 +145,14 @@ class ProductManager {
         
         let stars = '';
         
-        // To'liq yulduzlar
         for (let i = 0; i < fullStars; i++) {
             stars += '<i class="fas fa-star"></i>';
         }
         
-        // Yarim yulduz
         if (hasHalfStar) {
             stars += '<i class="fas fa-star-half-alt"></i>';
         }
         
-        // Bo'sh yulduzlar
         const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
         for (let i = 0; i < emptyStars; i++) {
             stars += '<i class="far fa-star"></i>';
@@ -158,7 +162,6 @@ class ProductManager {
     }
 
     setupProductEventListeners() {
-        // Savatga qo'shish
         document.querySelectorAll('.add-to-cart').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -174,7 +177,6 @@ class ProductManager {
             });
         });
 
-        // Tez ko'rish
         document.querySelectorAll('.quick-view').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -216,7 +218,6 @@ class ProductManager {
     }
 
     setupEventListeners() {
-        // Filtrlarni sozlash
         const categoryFilter = document.getElementById('category');
         const priceFilter = document.getElementById('price');
         const sortFilter = document.getElementById('sort');
@@ -231,7 +232,6 @@ class ProductManager {
             sortFilter.addEventListener('change', () => this.applyFilters());
         }
 
-        // Pagination
         const prevBtn = document.getElementById('prev-page');
         const nextBtn = document.getElementById('next-page');
 
@@ -242,7 +242,6 @@ class ProductManager {
             nextBtn.addEventListener('click', () => this.nextPage());
         }
 
-        // Modal yopish
         const closeModal = document.querySelector('.close-modal');
         if (closeModal) {
             closeModal.addEventListener('click', () => {
@@ -251,7 +250,6 @@ class ProductManager {
             });
         }
 
-        // Tashqariga bosganda modal yopish
         window.addEventListener('click', (e) => {
             const modal = document.getElementById('quick-view-modal');
             if (e.target === modal) {
@@ -267,12 +265,10 @@ class ProductManager {
 
         let filtered = [...this.products];
 
-        // Kategoriya bo'yicha filtr
         if (categoryFilter && categoryFilter.value !== 'all') {
             filtered = filtered.filter(product => product.category === categoryFilter.value);
         }
 
-        // Narx bo'yicha filtr
         if (priceFilter && priceFilter.value !== 'all') {
             const priceRange = priceFilter.value;
             
@@ -292,7 +288,6 @@ class ProductManager {
             });
         }
 
-        // Saralash
         if (sortFilter) {
             switch (sortFilter.value) {
                 case 'price-low':
@@ -305,7 +300,6 @@ class ProductManager {
                     filtered.sort((a, b) => a.name.localeCompare(b.name));
                     break;
                 default:
-                    // Standart saralash - yangilari birinchi
                     filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             }
         }
@@ -338,7 +332,7 @@ class ProductManager {
 
         if (pageNumbers) {
             let pagesHTML = '';
-            const maxPages = 5; // Ko'rsatiladigan maksimal sahifa soni
+            const maxPages = 5;
             
             let startPage = Math.max(1, this.currentPage - 2);
             let endPage = Math.min(totalPages, startPage + maxPages - 1);
@@ -425,11 +419,23 @@ class ProductManager {
     }
 }
 
-// Global o'zgaruvchi sifatida e'lon qilish
+// Global o'zgaruvchi
 let productManager;
 
 // DOM yuklanganda ishga tushirish
 document.addEventListener('DOMContentLoaded', function() {
     console.log("DOM yuklandi, ProductManager ishga tushmoqda...");
-    productManager = new ProductManager();
+    
+    // Firebase global o'zgaruvchilari mavjudligini tekshirish
+    if (window.db && window.firestore) {
+        productManager = new ProductManager();
+    } else {
+        console.error("Firebase ishga tushmagan!");
+        document.getElementById('products-container').innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                <h3>Firebase ishga tushmagan</h3>
+                <p>Iltimos, qaytadan urinib ko'ring</p>
+            </div>
+        `;
+    }
 });
