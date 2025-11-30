@@ -128,6 +128,71 @@
     </div>
 
     <!-- Scriptlar -->
+<script type="module">
+    // Firebase config import qilish
+    import { db } from './firebase-config.js';
+    import { 
+        collection, 
+        getDocs
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // Sodda mahsulot yuklash
+    async function loadProducts() {
+        try {
+            console.log("Mahsulotlar yuklanmoqda...");
+            const querySnapshot = await getDocs(collection(db, "products"));
+            const container = document.getElementById("products-container");
+            
+            if (querySnapshot.empty) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                        <h3>Hozircha mahsulotlar mavjud emas</h3>
+                        <p>Admin panel orqali mahsulot qo'shing</p>
+                        <a href="admin-add.html" class="btn btn-primary">Mahsulot qo'shish</a>
+                    </div>
+                `;
+                return;
+            }
+
+            let productsHTML = '';
+            querySnapshot.forEach((doc) => {
+                const product = doc.data();
+                productsHTML += `
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="${product.imageBase64 || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=350&h=350&fit=crop'}" alt="${product.name}">
+                            <div class="product-actions">
+                                <button class="action-btn quick-view" data-product-id="${doc.id}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn add-to-cart" data-name="${product.name}" data-price="${product.price}">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p class="product-price">${product.price ? product.price.toLocaleString() : 0} so'm</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = productsHTML;
+            
+        } catch (error) {
+            console.error("Xatolik:", error);
+            document.getElementById("products-container").innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: red;">
+                    <p>Mahsulotlarni yuklashda xatolik: ${error.message}</p>
+                </div>
+            `;
+        }
+    }
+
+    // DOM yuklanganda mahsulotlarni yuklash
+    document.addEventListener('DOMContentLoaded', loadProducts);
+</script>
     <script src="firebase-loader.js"></script>
     <script src="catalog.js"></script>
     <script src="script.js"></script>
