@@ -109,12 +109,8 @@ class ProductManager {
                     <div style="font-size: 4rem; margin-bottom: 20px;">📦</div>
                     <h3 style="color: var(--text-light); margin-bottom: 15px;">Hozircha mahsulotlar mavjud emas</h3>
                     <p style="color: var(--text-light); margin-bottom: 30px;">
-                        Tez orada yangi mahsulotlar qo'shiladi yoki<br>
-                        admin panel orqali mahsulot qo'shing
+                        Tez orada yangi mahsulotlar qo'shiladi!
                     </p>
-                    <a href="admin-add.html" class="btn btn-primary" style="margin: 10px;">
-                        ➕ Mahsulot qo'shish
-                    </a>
                     <button onclick="location.reload()" class="btn btn-secondary" style="margin: 10px;">
                         🔄 Yangilash
                     </button>
