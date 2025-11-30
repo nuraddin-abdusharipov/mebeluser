@@ -1,4 +1,4 @@
-// catalog.js - TEST MA'LUMOTLARSIZ VERSIYA
+// catalog.js - TUZATILGAN VERSIYA
 import { db } from './firebase-config.js';
 import { 
     collection, 
@@ -8,18 +8,12 @@ import {
     where 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// catalog.js - MODULSIZ VERSIYA
 class ProductManager {
     constructor() {
         this.products = [];
         this.filteredProducts = [];
         this.currentPage = 1;
         this.productsPerPage = 6;
-        
-        // Firebase ni global o'zgaruvchilar orqali ishlatamiz
-        this.db = window.db;
-        this.firestore = window.firestore;
-        
         this.init();
     }
 
@@ -33,17 +27,21 @@ class ProductManager {
         try {
             console.log("Firestoredan mahsulotlarni yuklash...");
             
-            if (!this.db) {
-                throw new Error("Firebase ishga tushmagan");
-            }
-            
-            // Firestore dan mahsulotlarni olish
-            const querySnapshot = await this.firestore.getDocs(this.firestore.collection(this.db, 'products'));
+            // INDEKS TALAB QILMAYDIGAN SODDA SO'ROV
+            const productsRef = collection(db, 'products');
+            const querySnapshot = await getDocs(productsRef);
             
             this.products = [];
             
+            if (querySnapshot.empty) {
+                console.log("Firestoreda mahsulotlar topilmadi");
+                this.showEmptyState();
+                return;
+            }
+            
             querySnapshot.forEach((doc) => {
                 const productData = doc.data();
+                console.log("Mahsulot ma'lumotlari:", productData);
                 
                 // Client tomonda filtrlash
                 if (productData.status !== 'inactive') {
@@ -51,7 +49,7 @@ class ProductManager {
                         id: doc.id,
                         name: productData.name || 'Nomsiz mahsulot',
                         price: productData.price || 0,
-                        image: productData.image || this.getDefaultImage(),
+                        image: this.getProductImage(productData),
                         category: productData.category || 'umumiy',
                         rating: productData.rating || 4,
                         description: productData.description || 'Tavsif mavjud emas',
@@ -61,7 +59,7 @@ class ProductManager {
                 }
             });
             
-            // Client tomonda saralash
+            // Client tomonda saralash (eng yangilari birinchi)
             this.products.sort((a, b) => {
                 return new Date(b.createdAt) - new Date(a.createdAt);
             });
@@ -74,7 +72,24 @@ class ProductManager {
         } catch (error) {
             console.error('Mahsulotlarni yuklashda xatolik:', error);
             this.showError('Mahsulotlarni yuklashda xatolik: ' + error.message);
+            this.showEmptyState();
         }
+    }
+
+    // Rasmni olish funksiyasi
+    getProductImage(productData) {
+        // 1. Base64 rasm bor bo'lsa
+        if (productData.imageBase64 && productData.imageBase64.startsWith('data:image')) {
+            return productData.imageBase64;
+        }
+        
+        // 2. Tashqi URL bor bo'lsa
+        if (productData.image && productData.image.startsWith('http')) {
+            return productData.image;
+        }
+        
+        // 3. Default rasm
+        return this.getDefaultImage();
     }
 
     getDefaultImage() {
@@ -86,6 +101,28 @@ class ProductManager {
         return defaultImages[Math.floor(Math.random() * defaultImages.length)];
     }
 
+    showEmptyState() {
+        const container = document.getElementById('products-container');
+        if (container) {
+            container.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">📦</div>
+                    <h3 style="color: var(--text-light); margin-bottom: 15px;">Hozircha mahsulotlar mavjud emas</h3>
+                    <p style="color: var(--text-light); margin-bottom: 30px;">
+                        Tez orada yangi mahsulotlar qo'shiladi yoki<br>
+                        admin panel orqali mahsulot qo'shing
+                    </p>
+                    <a href="admin-add.html" class="btn btn-primary" style="margin: 10px;">
+                        ➕ Mahsulot qo'shish
+                    </a>
+                    <button onclick="location.reload()" class="btn btn-secondary" style="margin: 10px;">
+                        🔄 Yangilash
+                    </button>
+                </div>
+            `;
+        }
+    }
+
     displayProducts() {
         const container = document.getElementById('products-container');
         if (!container) {
@@ -93,6 +130,7 @@ class ProductManager {
             return;
         }
 
+        // Joriy sahifadagi mahsulotlarni hisoblash
         const startIndex = (this.currentPage - 1) * this.productsPerPage;
         const endIndex = startIndex + this.productsPerPage;
         const currentProducts = this.filteredProducts.slice(startIndex, endIndex);
@@ -100,8 +138,8 @@ class ProductManager {
         if (currentProducts.length === 0) {
             container.innerHTML = `
                 <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                    <h3>Hozircha mahsulotlar mavjud emas</h3>
-                    <p>Tez orada yangi mahsulotlar qo'shiladi</p>
+                    <h3>Filtr bo'yicha mahsulotlar topilmadi</h3>
+                    <p>Boshqa filterlarni sinab ko'ring</p>
                 </div>
             `;
             return;
@@ -110,7 +148,8 @@ class ProductManager {
         container.innerHTML = currentProducts.map(product => `
             <div class="product-card">
                 <div class="product-image">
-                    <img src="${product.image}" alt="${product.name}" loading="lazy">
+                    <img src="${product.image}" alt="${product.name}" loading="lazy" 
+                         onerror="this.src='${this.getDefaultImage()}'">
                     <div class="product-actions">
                         <button class="action-btn quick-view" data-product-id="${product.id}">
                             <i class="fas fa-eye"></i>
@@ -145,14 +184,17 @@ class ProductManager {
         
         let stars = '';
         
+        // To'liq yulduzlar
         for (let i = 0; i < fullStars; i++) {
             stars += '<i class="fas fa-star"></i>';
         }
         
+        // Yarim yulduz
         if (hasHalfStar) {
             stars += '<i class="fas fa-star-half-alt"></i>';
         }
         
+        // Bo'sh yulduzlar
         const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
         for (let i = 0; i < emptyStars; i++) {
             stars += '<i class="far fa-star"></i>';
@@ -162,6 +204,7 @@ class ProductManager {
     }
 
     setupProductEventListeners() {
+        // Savatga qo'shish
         document.querySelectorAll('.add-to-cart').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -177,6 +220,7 @@ class ProductManager {
             });
         });
 
+        // Tez ko'rish
         document.querySelectorAll('.quick-view').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -218,6 +262,7 @@ class ProductManager {
     }
 
     setupEventListeners() {
+        // Filtrlarni sozlash
         const categoryFilter = document.getElementById('category');
         const priceFilter = document.getElementById('price');
         const sortFilter = document.getElementById('sort');
@@ -232,6 +277,7 @@ class ProductManager {
             sortFilter.addEventListener('change', () => this.applyFilters());
         }
 
+        // Pagination
         const prevBtn = document.getElementById('prev-page');
         const nextBtn = document.getElementById('next-page');
 
@@ -242,6 +288,7 @@ class ProductManager {
             nextBtn.addEventListener('click', () => this.nextPage());
         }
 
+        // Modal yopish
         const closeModal = document.querySelector('.close-modal');
         if (closeModal) {
             closeModal.addEventListener('click', () => {
@@ -250,6 +297,7 @@ class ProductManager {
             });
         }
 
+        // Tashqariga bosganda modal yopish
         window.addEventListener('click', (e) => {
             const modal = document.getElementById('quick-view-modal');
             if (e.target === modal) {
@@ -265,10 +313,12 @@ class ProductManager {
 
         let filtered = [...this.products];
 
+        // Kategoriya bo'yicha filtr
         if (categoryFilter && categoryFilter.value !== 'all') {
             filtered = filtered.filter(product => product.category === categoryFilter.value);
         }
 
+        // Narx bo'yicha filtr
         if (priceFilter && priceFilter.value !== 'all') {
             const priceRange = priceFilter.value;
             
@@ -288,6 +338,7 @@ class ProductManager {
             });
         }
 
+        // Saralash
         if (sortFilter) {
             switch (sortFilter.value) {
                 case 'price-low':
@@ -300,6 +351,7 @@ class ProductManager {
                     filtered.sort((a, b) => a.name.localeCompare(b.name));
                     break;
                 default:
+                    // Standart saralash - yangilari birinchi
                     filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             }
         }
@@ -419,23 +471,11 @@ class ProductManager {
     }
 }
 
-// Global o'zgaruvchi
+// Global o'zgaruvchi sifatida e'lon qilish
 let productManager;
 
 // DOM yuklanganda ishga tushirish
 document.addEventListener('DOMContentLoaded', function() {
     console.log("DOM yuklandi, ProductManager ishga tushmoqda...");
-    
-    // Firebase global o'zgaruvchilari mavjudligini tekshirish
-    if (window.db && window.firestore) {
-        productManager = new ProductManager();
-    } else {
-        console.error("Firebase ishga tushmagan!");
-        document.getElementById('products-container').innerHTML = `
-            <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                <h3>Firebase ishga tushmagan</h3>
-                <p>Iltimos, qaytadan urinib ko'ring</p>
-            </div>
-        `;
-    }
+    productManager = new ProductManager();
 });
