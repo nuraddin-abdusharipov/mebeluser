@@ -1,4 +1,4 @@
-// firebase-config.js
+// firebase-config.js - SODDA VERSIYA
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -11,5 +11,8 @@ const firebaseConfig = {
     appId: "1:617901776386:web:ba721f25f32c87b8b6111b"
 };
 
-export const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+// Firebase ni ishga tushirish
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+export { app, db };
