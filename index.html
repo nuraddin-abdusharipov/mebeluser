@@ -282,16 +282,17 @@
         </div>
     </footer>
 
-    <!-- Savat -->
+    <!-- Savat Modal -->
     <div id="cart-sidebar" class="cart-sidebar">
         <div class="cart-header">
-            <h3><i class="fas fa-shopping-cart"></i> Savat</h3>
+            <h3><i class="fas fa-shopping-cart"></i> Savatingiz</h3>
             <button class="close-cart" id="close-cart-btn">&times;</button>
         </div>
         <div class="cart-items" id="cart-items-container">
             <div style="text-align: center; padding: 40px 20px;">
                 <i class="fas fa-shopping-cart" style="font-size: 3rem; color: var(--border-color); margin-bottom: 15px;"></i>
-                <p>Savatingiz bo'sh</p>
+                <p style="color: var(--text-light);">Savatingiz hozircha bo'sh</p>
+                <p style="color: var(--text-light); font-size: 0.9rem; margin-top: 10px;">Mahsulotlarni savatga qo'shish uchun "Savatga" tugmasini bosing</p>
             </div>
         </div>
         <div class="cart-footer">
@@ -301,7 +302,7 @@
             </div>
             <button class="checkout-btn">
                 <i class="fas fa-credit-card"></i>
-                Sotib olish
+                Buyurtma berish
             </button>
         </div>
     </div>
@@ -310,6 +311,374 @@
     <div class="scroll-to-top" id="scrollToTop">
         <i class="fas fa-chevron-up"></i>
     </div>
+
+    <script>
+        // Savat funksiyalari
+        let cart = [];
+
+        // Savatga qo'shish
+        function addToCart(name, price) {
+            // Tekshirish: mahsulot allaqachon savatda bormi?
+            const existingItem = cart.find(item => item.name === name);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ 
+                    name, 
+                    price, 
+                    quantity: 1,
+                    image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=100&h=100&fit=crop'
+                });
+            }
+            
+            updateCartUI();
+            showNotification(`"${name}" savatga qo'shildi! 🛒`);
+        }
+
+        // Savat UI ni yangilash
+        function updateCartUI() {
+            const cartCount = document.getElementById('cart-count');
+            const cartItems = document.getElementById('cart-items-container');
+            const cartTotal = document.getElementById('cart-total-price');
+
+            // Savat soni
+            if (cartCount) {
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCount.textContent = totalItems;
+            }
+
+            // Savat bo'sh bo'lsa
+            if (cart.length === 0) {
+                if (cartItems) {
+                    cartItems.innerHTML = `
+                        <div style="text-align: center; padding: 40px 20px;">
+                            <i class="fas fa-shopping-cart" style="font-size: 3rem; color: var(--border-color); margin-bottom: 15px;"></i>
+                            <p style="color: var(--text-light);">Savatingiz hozircha bo'sh</p>
+                            <p style="color: var(--text-light); font-size: 0.9rem; margin-top: 10px;">Mahsulotlarni savatga qo'shish uchun "Savatga" tugmasini bosing</p>
+                        </div>
+                    `;
+                }
+                if (cartTotal) {
+                    cartTotal.textContent = '0 so\'m';
+                }
+                return;
+            }
+
+            // Savat elementlari
+            let total = 0;
+            let itemsHTML = '';
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                itemsHTML += `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                        <div class="cart-item-info" style="flex: 1;">
+                            <h4 style="font-size: 0.9rem; margin-bottom: 5px; color: white;">${item.name}</h4>
+                            <p class="cart-item-price" style="color: var(--secondary-color); font-weight: bold; font-size: 0.9rem;">
+                                ${item.price.toLocaleString()} so'm
+                            </p>
+                        </div>
+                        <div class="cart-item-quantity" style="display: flex; align-items: center; gap: 8px;">
+                            <button onclick="updateQuantity(${index}, -1)" style="
+                                background: rgba(255,255,255,0.2); 
+                                border: 1px solid rgba(255,255,255,0.3); 
+                                width: 25px; 
+                                height: 25px; 
+                                border-radius: 4px; 
+                                cursor: pointer; 
+                                color: white;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            ">-</button>
+                            <span style="color: white; font-weight: bold; min-width: 20px; text-align: center;">${item.quantity}</span>
+                            <button onclick="updateQuantity(${index}, 1)" style="
+                                background: rgba(255,255,255,0.2); 
+                                border: 1px solid rgba(255,255,255,0.3); 
+                                width: 25px; 
+                                height: 25px; 
+                                border-radius: 4px; 
+                                cursor: pointer; 
+                                color: white;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            ">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (cartItems) cartItems.innerHTML = itemsHTML;
+            if (cartTotal) cartTotal.textContent = `${total.toLocaleString()} so'm`;
+        }
+
+        // Mahsulot miqdorini yangilash
+        function updateQuantity(index, change) {
+            if (cart[index].quantity + change > 0) {
+                cart[index].quantity += change;
+            } else {
+                // Agar miqdor 0 bo'lsa, mahsulotni o'chirish
+                const removedItem = cart.splice(index, 1)[0];
+                showNotification(`"${removedItem.name}" savatdan olib tashlandi`);
+            }
+            updateCartUI();
+        }
+
+        // Xabar ko'rsatish
+        function showNotification(message) {
+            // Eski notificationlarni o'chirish
+            const oldNotifications = document.querySelectorAll('.notification');
+            oldNotifications.forEach(notif => notif.remove());
+
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 30px;
+                background: linear-gradient(135deg, #27ae60, #2ecc71);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+                z-index: 10000;
+                animation: slideInRight 0.5s ease;
+                font-weight: 500;
+                backdrop-filter: blur(10px);
+                border-left: 4px solid #2ecc71;
+                max-width: 300px;
+            `;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-check-circle" style="font-size: 1.2rem;"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'fadeOut 0.5s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 500);
+            }, 3000);
+        }
+
+        // Savat modalini boshqarish
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartToggle = document.getElementById('cart-toggle');
+            const cartSidebar = document.getElementById('cart-sidebar');
+            const closeCartBtn = document.getElementById('close-cart-btn');
+            const checkoutBtn = document.querySelector('.checkout-btn');
+
+            // Savatni ochish
+            if (cartToggle && cartSidebar) {
+                cartToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    cartSidebar.classList.add('open');
+                });
+            }
+
+            // Savatni yopish
+            if (closeCartBtn && cartSidebar) {
+                closeCartBtn.addEventListener('click', function() {
+                    cartSidebar.classList.remove('open');
+                });
+            }
+
+            // Tashqariga bosganda yopish
+            document.addEventListener('click', function(e) {
+                if (cartSidebar && cartSidebar.classList.contains('open') && 
+                    !cartSidebar.contains(e.target) && 
+                    !cartToggle.contains(e.target)) {
+                    cartSidebar.classList.remove('open');
+                }
+            });
+
+            // Buyurtma berish
+            if (checkoutBtn) {
+                checkoutBtn.addEventListener('click', function() {
+                    if (cart.length === 0) {
+                        showNotification('Avval mahsulot qoʻshing!');
+                        return;
+                    }
+                    
+                    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                    showNotification(`Buyurtma berildi! Jami: ${total.toLocaleString()} so'm 🎉`);
+                    
+                    // Savatni tozalash
+                    cart = [];
+                    updateCartUI();
+                    
+                    // Modalni yopish
+                    if (cartSidebar) {
+                        cartSidebar.classList.remove('open');
+                    }
+                });
+            }
+
+            // Mahsulotlarni savatga qo'shish
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const name = this.dataset.name;
+                    const price = parseInt(this.dataset.price);
+                    addToCart(name, price);
+                });
+            });
+
+            // Dastlabki savat UI ni yangilash
+            updateCartUI();
+        });
+
+        // Global funksiyalar
+        window.addToCart = addToCart;
+        window.updateQuantity = updateQuantity;
+    </script>
+
+    <!-- CSS Animatsiyalar -->
+    <style>
+        @keyframes slideInRight {
+            from { 
+                transform: translateX(100%); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateX(0); 
+                opacity: 1; 
+            }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2d2d2d 100%);
+            box-shadow: -5px 0 25px rgba(0,0,0,0.2);
+            z-index: 3000;
+            transition: right 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            color: var(--white-color);
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 25px;
+            background: rgba(0,0,0,0.2);
+            color: var(--white-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .cart-header h3 {
+            margin: 0;
+            color: var(--white-color);
+            font-size: 1.3rem;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: var(--white-color);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .close-cart:hover {
+            background: rgba(255,255,255,0.1);
+            transform: scale(1.1);
+        }
+
+        .cart-items {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .cart-item:hover {
+            background: rgba(255,255,255,0.08);
+            transform: translateY(-2px);
+        }
+
+        .cart-footer {
+            padding: 25px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: var(--white-color);
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--secondary-color), #ffd700);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+        }
+    </style>
 
     <script src="script.js"></script>
 </body>
