@@ -13,22 +13,23 @@
     <header class="main-header">
         <div class="container">
             <a href="index.html" class="logo">
-                <img src="https://i.ibb.co/6yF1s9H/logo-placeholder.png" alt="Mebel Markazi Logo">
+                <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #d4af37, #ffd700); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                    <i class="fas fa-couch" style="color: #1a1a1a; font-size: 1.2rem;"></i>
+                </div>
                 <span>Mebel Markazi</span>
             </a>
-            <nav class="main-nav">
+            <nav class="main-nav" id="mainNav">
                 <ul>
                     <li><a href="index.html">Bosh sahifa</a></li>
                     <li><a href="mebel.html" class="active">Mahsulotlar</a></li>
-                    <li><a href="#">Biz haqimizda</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Aloqa</a></li>
+                    <li><a href="admin-list.html">Admin</a></li>
+                    <li><a href="#contact">Aloqa</a></li>
                 </ul>
             </nav>
             <div class="header-icons">
                 <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
                 <a href="#" class="cart-icon" id="cart-toggle"><i class="fas fa-shopping-cart"></i><span id="cart-count">0</span></a>
-                <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
             </div>
         </div>
     </header>
@@ -45,7 +46,7 @@
                 <!-- Filtrlar -->
                 <div class="filters">
                     <div class="filter-group">
-                        <label for="category">Kategoriya:</label>
+                        <label for="category"><i class="fas fa-tags"></i> Kategoriya:</label>
                         <select id="category">
                             <option value="all">Barchasi</option>
                             <option value="living">Mehmonxona</option>
@@ -55,17 +56,17 @@
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="price">Narx:</label>
+                        <label for="price"><i class="fas fa-tag"></i> Narx:</label>
                         <select id="price">
                             <option value="all">Barchasi</option>
-                            <option value="0-5000000">5 000 000 so'm gacha</option>
+                            <option value="0-5000000">5,000,000 so'm gacha</option>
                             <option value="5000000-10000000">5-10 mln so'm</option>
                             <option value="10000000-20000000">10-20 mln so'm</option>
                             <option value="20000000+">20 mln so'mdan yuqori</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="sort">Saralash:</label>
+                        <label for="sort"><i class="fas fa-sort"></i> Saralash:</label>
                         <select id="sort">
                             <option value="default">Standart</option>
                             <option value="price-low">Arzondan qimmatga</option>
@@ -77,8 +78,9 @@
 
                 <!-- Mahsulotlar Grid -->
                 <div class="products-grid" id="products-container">
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                        <p>Firebase yuklanmoqda...</p>
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                        <div class="loading-spinner"></div>
+                        <p style="margin-top: 20px; font-size: 1.1rem; color: var(--text-light);">Mahsulotlar yuklanmoqda...</p>
                     </div>
                 </div>
 
@@ -88,7 +90,7 @@
                         <i class="fas fa-chevron-left"></i> Oldingi
                     </button>
                     <div class="page-numbers" id="page-numbers">
-                        <!-- Sahifa raqamlari -->
+                        <span class="page-number active">1</span>
                     </div>
                     <button class="pagination-btn" id="next-page">
                         Keyingi <i class="fas fa-chevron-right"></i>
@@ -98,101 +100,539 @@
         </section>
     </main>
 
-    <!-- Footer (qisqartirilgan) -->
-    <footer class="main-footer">
+    <!-- Footer -->
+    <footer class="main-footer" id="contact">
         <div class="container">
+            <div class="footer-content">
+                <div class="footer-widget about-widget">
+                    <h3>Mebel Markazi</h3>
+                    <p>Bizning maqsadimiz - sizning uyingiz va ofisingizni eng yuqori sifatdagi, zamonaviy va qulay mebellar bilan jihozlash.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                <div class="footer-widget links-widget">
+                    <h3>Foydali Havolalar</h3>
+                    <div class="footer-links">
+                        <ul>
+                            <li><a href="index.html">Bosh sahifa</a></li>
+                            <li><a href="mebel.html">Mahsulotlar</a></li>
+                            <li><a href="admin-list.html">Admin Panel</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-widget contact-widget">
+                    <h3>Aloqa</h3>
+                    <p><i class="fas fa-phone"></i> +998 90 123 45 67</p>
+                    <p><i class="fas fa-envelope"></i> info@mebelmarkazi.uz</p>
+                </div>
+            </div>
             <div class="footer-bottom">
                 <p>&copy; 2024 Mebel Markazi. Barcha huquqlar himoyalangan.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Modal oynalar -->
-    <div id="quick-view-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-body">
-                <div class="modal-image">
-                    <img id="modal-product-image" src="" alt="Mahsulot rasmi">
-                </div>
-                <div class="modal-details">
-                    <h2 id="modal-product-name">Mahsulot nomi</h2>
-                    <div class="price" id="modal-product-price">0 so'm</div>
-                    <div class="description">
-                        <p>Bu mahsulot eng yuqori sifatli materiallardan tayyorlangan.</p>
-                    </div>
-                    <button class="btn btn-primary add-to-cart-modal">Savatga qo'shish</button>
-                </div>
+    <!-- Savat -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> Savat</h3>
+            <button class="close-cart" id="close-cart-btn">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items-container">
+            <div style="text-align: center; padding: 40px 20px;">
+                <i class="fas fa-shopping-cart" style="font-size: 3rem; color: var(--border-color); margin-bottom: 15px;"></i>
+                <p>Savatingiz bo'sh</p>
             </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Jami:</span>
+                <span id="cart-total-price">0 so'm</span>
+            </div>
+            <button class="checkout-btn">
+                <i class="fas fa-credit-card"></i>
+                Sotib olish
+            </button>
         </div>
     </div>
 
-    <!-- Scriptlar -->
-<script type="module">
-    // Firebase config import qilish
-    import { db } from './firebase-config.js';
-    import { 
-        collection, 
-        getDocs
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    <!-- Scroll to top -->
+    <div class="scroll-to-top" id="scrollToTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
 
-    // Sodda mahsulot yuklash
-    async function loadProducts() {
-        try {
-            console.log("Mahsulotlar yuklanmoqda...");
-            const querySnapshot = await getDocs(collection(db, "products"));
-            const container = document.getElementById("products-container");
+    <!-- Firebase Scripts -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            getDocs,
+            query,
+            where 
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Firebase konfiguratsiyasi
+        const firebaseConfig = {
+            apiKey: "AIzaSyAli-zl-logpPl70uHAJTq7cq1ReiMPDGk",
+            authDomain: "mebel-be376.firebaseapp.com",
+            projectId: "mebel-be376",
+            storageBucket: "mebel-be376.firebasestorage.app",
+            messagingSenderId: "617901776386",
+            appId: "1:617901776386:web:ba721f25f32c87b8b6111b"
+        };
+
+        // Firebase ni ishga tushirish
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        console.log("Firebase ishga tushdi");
+
+        // Global o'zgaruvchilar
+        let allProducts = [];
+        let filteredProducts = [];
+        let currentPage = 1;
+        const productsPerPage = 6;
+
+        // Mahsulotlarni Firestoredan yuklash
+        async function loadProductsFromFirebase() {
+            try {
+                console.log("Firestoredan mahsulotlar yuklanmoqda...");
+                const productsRef = collection(db, 'products');
+                const querySnapshot = await getDocs(productsRef);
+                
+                allProducts = [];
+                
+                querySnapshot.forEach((doc) => {
+                    const productData = doc.data();
+                    console.log("Mahsulot ma'lumotlari:", productData);
+                    
+                    // Faol mahsulotlarni olish
+                    if (productData.status !== 'inactive') {
+                        allProducts.push({
+                            id: doc.id,
+                            name: productData.name || 'Nomsiz mahsulot',
+                            price: productData.price || 0,
+                            image: getProductImage(productData),
+                            category: productData.category || 'other',
+                            rating: productData.rating || 4,
+                            description: productData.description || '',
+                            createdAt: productData.createdAt || new Date(),
+                            status: productData.status || 'active'
+                        });
+                    }
+                });
+
+                console.log(`Yuklangan mahsulotlar soni: ${allProducts.length}`);
+
+                // Agar mahsulotlar bo'lmasa, test ma'lumotlari
+                if (allProducts.length === 0) {
+                    console.log("Firestoreda mahsulot yo'q, test ma'lumotlari ishlatilmoqda");
+                    allProducts = getTestProducts();
+                }
+
+                // Saralash (eng yangilari birinchi)
+                allProducts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                
+                filteredProducts = [...allProducts];
+                displayProducts();
+                setupEventListeners();
+
+            } catch (error) {
+                console.error('Firestore xatosi:', error);
+                // Xatolik bo'lsa, test ma'lumotlari ishlatish
+                allProducts = getTestProducts();
+                filteredProducts = [...allProducts];
+                displayProducts();
+                setupEventListeners();
+            }
+        }
+
+        // Test mahsulotlari (agar Firestore ishlamasa)
+        function getTestProducts() {
+            return [
+                {
+                    id: '1',
+                    name: "Milan divan to'plami",
+                    price: 12500000,
+                    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    category: "living",
+                    rating: 4.5,
+                    description: "Zamonaviy dizayndagi qulay divan to'plami",
+                    createdAt: new Date('2024-01-15'),
+                    status: 'active'
+                },
+                {
+                    id: '2',
+                    name: "Luna yotoq to'plami",
+                    price: 15800000,
+                    image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    category: "bedroom",
+                    rating: 5,
+                    description: "Romantik va qulay yotoq xonasi to'plami",
+                    createdAt: new Date('2024-01-10'),
+                    status: 'active'
+                },
+                {
+                    id: '3',
+                    name: "Ariana oshxona to'plami",
+                    price: 22000000,
+                    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    category: "kitchen",
+                    rating: 4,
+                    description: "Funksional va zamonaviy oshxona mebellari",
+                    createdAt: new Date('2024-01-05'),
+                    status: 'active'
+                },
+                {
+                    id: '4',
+                    name: "Executive ofis stoli",
+                    price: 8500000,
+                    image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    category: "office",
+                    rating: 4.2,
+                    description: "Zamonaviy ofis stoli",
+                    createdAt: new Date('2024-01-01'),
+                    status: 'active'
+                }
+            ];
+        }
+
+        // Rasmni olish
+        function getProductImage(productData) {
+            // 1. Base64 rasm bor bo'lsa
+            if (productData.imageBase64 && productData.imageBase64.startsWith('data:image')) {
+                return productData.imageBase64;
+            }
             
-            if (querySnapshot.empty) {
+            // 2. Tashqi URL bor bo'lsa
+            if (productData.image && productData.image.startsWith('http')) {
+                return productData.image;
+            }
+            
+            // 3. Default rasm
+            return getDefaultImage();
+        }
+
+        function getDefaultImage() {
+            const defaultImages = [
+                'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=350&h=350&fit=crop',
+                'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=350&h=350&fit=crop',
+                'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=350&h=350&fit=crop'
+            ];
+            return defaultImages[Math.floor(Math.random() * defaultImages.length)];
+        }
+
+        // Mahsulotlarni ekranga chiqarish
+        function displayProducts() {
+            const container = document.getElementById('products-container');
+            if (!container) return;
+
+            // Joriy sahifadagi mahsulotlarni hisoblash
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = startIndex + productsPerPage;
+            const currentProducts = filteredProducts.slice(startIndex, endIndex);
+
+            if (currentProducts.length === 0) {
                 container.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                        <h3>Hozircha mahsulotlar mavjud emas</h3>
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                        <i class="fas fa-search" style="font-size: 3rem; color: var(--border-color); margin-bottom: 15px;"></i>
+                        <h3 style="color: var(--text-light); margin-bottom: 10px;">Mahsulotlar topilmadi</h3>
+                        <p style="color: var(--text-light);">Boshqa filterlarni sinab ko'ring yoki yangi mahsulot qo'shing</p>
+                        <a href="admin-add.html" class="btn btn-primary" style="margin-top: 20px;">
+                            <i class="fas fa-plus"></i> Yangi Mahsulot Qo'shish
+                        </a>
                     </div>
                 `;
                 return;
             }
 
-            let productsHTML = '';
-            querySnapshot.forEach((doc) => {
-                const product = doc.data();
-                productsHTML += `
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="${product.imageBase64 || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=350&h=350&fit=crop'}" alt="${product.name}">
-                            <div class="product-actions">
-                                <button class="action-btn quick-view" data-product-id="${doc.id}">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn add-to-cart" data-name="${product.name}" data-price="${product.price}">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </div>
+            container.innerHTML = currentProducts.map(product => `
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}" loading="lazy" 
+                             onerror="this.src='${getDefaultImage()}'">
+                        <div class="product-actions">
+                            <button class="action-btn quick-view" data-product-id="${product.id}">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn add-to-cart" 
+                                    data-name="${product.name}" 
+                                    data-price="${product.price}">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
                         </div>
-                        <div class="product-info">
-                            <h3>${product.name}</h3>
-                            <p class="product-price">${product.price ? product.price.toLocaleString() : 0} so'm</p>
+                    </div>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="product-price">${product.price.toLocaleString()} so'm</p>
+                        <div class="product-rating">
+                            ${generateRatingStars(product.rating)}
+                        </div>
+                        ${product.description ? `<p style="color: var(--text-light); font-size: 0.9rem; margin-top: 10px;">${product.description}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+
+            updatePagination();
+            setupProductEventListeners();
+        }
+
+        function generateRatingStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            let stars = '';
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            if (hasHalfStar) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            }
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '<i class="far fa-star"></i>';
+            }
+            return stars;
+        }
+
+        // Event listenerlarni sozlash
+        function setupEventListeners() {
+            // Filtrlarni sozlash
+            const categoryFilter = document.getElementById('category');
+            const priceFilter = document.getElementById('price');
+            const sortFilter = document.getElementById('sort');
+
+            if (categoryFilter) {
+                categoryFilter.addEventListener('change', applyFilters);
+            }
+            if (priceFilter) {
+                priceFilter.addEventListener('change', applyFilters);
+            }
+            if (sortFilter) {
+                sortFilter.addEventListener('change', applyFilters);
+            }
+
+            // Pagination
+            const prevBtn = document.getElementById('prev-page');
+            const nextBtn = document.getElementById('next-page');
+
+            if (prevBtn) {
+                prevBtn.addEventListener('click', previousPage);
+            }
+            if (nextBtn) {
+                nextBtn.addEventListener('click', nextPage);
+            }
+        }
+
+        function setupProductEventListeners() {
+            // Savatga qo'shish
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const name = this.dataset.name;
+                    const price = parseInt(this.dataset.price);
+                    addToCart(name, price);
+                });
+            });
+        }
+
+        // Filtrlash
+        function applyFilters() {
+            const categoryFilter = document.getElementById('category');
+            const priceFilter = document.getElementById('price');
+            const sortFilter = document.getElementById('sort');
+
+            let filtered = [...allProducts];
+
+            // Kategoriya bo'yicha filtrlash
+            if (categoryFilter && categoryFilter.value !== 'all') {
+                filtered = filtered.filter(product => product.category === categoryFilter.value);
+            }
+
+            // Narx bo'yicha filtrlash
+            if (priceFilter && priceFilter.value !== 'all') {
+                const priceRange = priceFilter.value;
+                
+                filtered = filtered.filter(product => {
+                    switch (priceRange) {
+                        case '0-5000000':
+                            return product.price <= 5000000;
+                        case '5000000-10000000':
+                            return product.price >= 5000000 && product.price <= 10000000;
+                        case '10000000-20000000':
+                            return product.price >= 10000000 && product.price <= 20000000;
+                        case '20000000+':
+                            return product.price >= 20000000;
+                        default:
+                            return true;
+                    }
+                });
+            }
+
+            // Saralash
+            if (sortFilter) {
+                switch (sortFilter.value) {
+                    case 'price-low':
+                        filtered.sort((a, b) => a.price - b.price);
+                        break;
+                    case 'price-high':
+                        filtered.sort((a, b) => b.price - a.price);
+                        break;
+                    case 'name':
+                        filtered.sort((a, b) => a.name.localeCompare(b.name));
+                        break;
+                    default:
+                        // Standart saralash - yangilari birinchi
+                        filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                }
+            }
+
+            filteredProducts = filtered;
+            currentPage = 1;
+            displayProducts();
+        }
+
+        // Pagination
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                displayProducts();
+            }
+        }
+
+        function nextPage() {
+            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayProducts();
+            }
+        }
+
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+            const pageNumbers = document.getElementById('page-numbers');
+            const prevBtn = document.getElementById('prev-page');
+            const nextBtn = document.getElementById('next-page');
+
+            if (pageNumbers) {
+                let pagesHTML = '';
+                const maxPages = 5;
+                
+                let startPage = Math.max(1, currentPage - 2);
+                let endPage = Math.min(totalPages, startPage + maxPages - 1);
+                
+                if (endPage - startPage + 1 < maxPages) {
+                    startPage = Math.max(1, endPage - maxPages + 1);
+                }
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    pagesHTML += `
+                        <span class="page-number ${i === currentPage ? 'active' : ''}" 
+                              onclick="currentPage = ${i}; displayProducts();">
+                            ${i}
+                        </span>
+                    `;
+                }
+                pageNumbers.innerHTML = pagesHTML;
+            }
+
+            if (prevBtn) {
+                prevBtn.disabled = currentPage === 1;
+            }
+            if (nextBtn) {
+                nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+            }
+        }
+
+        // DOM yuklanganda ishga tushirish
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProductsFromFirebase();
+        });
+    </script>
+
+    <!-- Asosiy script -->
+    <script>
+        // Savat funksiyasi
+        let cart = [];
+
+        function addToCart(name, price) {
+            cart.push({ name, price, quantity: 1 });
+            updateCartUI();
+            showNotification(`${name} savatga qo'shildi!`);
+        }
+
+        function updateCartUI() {
+            const cartCount = document.getElementById('cart-count');
+            const cartItems = document.getElementById('cart-items-container');
+            const cartTotal = document.getElementById('cart-total-price');
+
+            if (cartCount) cartCount.textContent = cart.length;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <i class="fas fa-shopping-cart" style="font-size: 3rem; color: var(--border-color); margin-bottom: 15px;"></i>
+                        <p>Savatingiz bo'sh</p>
+                    </div>
+                `;
+                if (cartTotal) cartTotal.textContent = '0 so\'m';
+                return;
+            }
+
+            let total = 0;
+            let itemsHTML = '';
+
+            cart.forEach((item, index) => {
+                total += item.price * item.quantity;
+                itemsHTML += `
+                    <div class="cart-item">
+                        <img src="https://via.placeholder.com/80" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <p class="cart-item-price">${item.price.toLocaleString()} so'm</p>
+                        </div>
+                        <div class="cart-item-quantity">
+                            <button onclick="updateQuantity(${index}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="updateQuantity(${index}, 1)">+</button>
                         </div>
                     </div>
                 `;
             });
 
-            container.innerHTML = productsHTML;
-            
-        } catch (error) {
-            console.error("Xatolik:", error);
-            document.getElementById("products-container").innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: red;">
-                    <p>Mahsulotlarni yuklashda xatolik: ${error.message}</p>
-                </div>
-            `;
+            if (cartItems) cartItems.innerHTML = itemsHTML;
+            if (cartTotal) cartTotal.textContent = `${total.toLocaleString()} so'm`;
         }
-    }
 
-    // DOM yuklanganda mahsulotlarni yuklash
-    document.addEventListener('DOMContentLoaded', loadProducts);
-</script>
-    <script src="firebase-loader.js"></script>
-    <script src="catalog.js"></script>
+        function updateQuantity(index, change) {
+            if (cart[index].quantity + change > 0) {
+                cart[index].quantity += change;
+            } else {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <i class="fas fa-check-circle"></i> ${message}
+            `;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Global qilish
+        window.updateQuantity = updateQuantity;
+    </script>
+
     <script src="script.js"></script>
 </body>
 </html>
